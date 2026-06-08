@@ -66,7 +66,7 @@ import { environment } from '../../../../environments/environment';
             <div class="sa-header" (click)="toggleSection(si)" [class.open]="openSections[si]">
               <span class="sa-arrow">{{ openSections[si] ? '▼' : '▶' }}</span>
               <span class="sa-title">{{ section.title }}</span>
-              <span class="sa-count">{{ section.contents?.length }}</span>
+              <span class="sa-count">{{ section.contents.length }}</span>
             </div>
             <div class="sa-body" *ngIf="openSections[si]">
               <div class="sa-lesson"

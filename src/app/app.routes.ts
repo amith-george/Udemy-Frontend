@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { instructorGuard } from './core/guards/instructor.guard';
 
 export const routes: Routes = [
   { path: '', loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent) },
@@ -13,5 +14,22 @@ export const routes: Routes = [
   { path: 'my-learning', loadComponent: () => import('./features/student/my-learning/my-learning.component').then(m => m.MyLearningComponent), canActivate: [authGuard] },
   { path: 'player/:id', loadComponent: () => import('./features/student/player/player.component').then(m => m.PlayerComponent), canActivate: [authGuard] },
   { path: 'profile', loadComponent: () => import('./features/student/profile/profile.component').then(m => m.ProfileComponent), canActivate: [authGuard] },
+  
+  // Instructor Routes
+  { 
+    path: 'instructor', 
+    loadComponent: () => import('./features/instructor/instructor-layout/instructor-layout.component').then(m => m.InstructorLayoutComponent),
+    canActivate: [instructorGuard],
+    children: [
+      { path: '', redirectTo: 'courses', pathMatch: 'full' },
+      { path: 'courses', loadComponent: () => import('./features/instructor/instructor-courses/instructor-courses.component').then(m => m.InstructorCoursesComponent) },
+      { path: 'course/create', loadComponent: () => import('./features/instructor/course-create/course-create.component').then(m => m.CourseCreateComponent) },
+      { path: 'course/:id/manage', loadComponent: () => import('./features/instructor/course-manage/course-manage.component').then(m => m.CourseManageComponent) },
+      { path: 'categories', loadComponent: () => import('./features/instructor/instructor-categories/instructor-categories.component').then(m => m.InstructorCategoriesComponent) },
+      // Optional profile path later
+      { path: 'profile', loadComponent: () => import('./features/student/profile/profile.component').then(m => m.ProfileComponent) }
+    ]
+  },
+
   { path: '**', redirectTo: '' }
 ];
