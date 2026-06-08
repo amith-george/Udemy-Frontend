@@ -35,7 +35,8 @@ import { CartService } from '../../core/services/cart.service';
         <!-- Desktop Links -->
         <div class="nav-links">
           <a routerLink="/courses" class="nav-link">Udemy Business</a>
-          <a routerLink="/register" class="nav-link">Teach on Udemy</a>
+          <a *ngIf="!isInstructor" routerLink="/register" class="nav-link">Teach on Udemy</a>
+          <a *ngIf="isInstructor" routerLink="/instructor" class="nav-link">Instructor</a>
           <a *ngIf="isLoggedIn" routerLink="/my-learning" class="nav-link">My learning</a>
         </div>
 
@@ -67,6 +68,8 @@ import { CartService } from '../../core/services/cart.service';
                 <div class="dropdown-divider"></div>
                 <a routerLink="/my-learning" class="dropdown-item">My learning</a>
                 <a routerLink="/cart" class="dropdown-item">My cart</a>
+                <div class="dropdown-divider" *ngIf="isInstructor"></div>
+                <a *ngIf="isInstructor" routerLink="/instructor" class="dropdown-item">Instructor Dashboard</a>
                 <div class="dropdown-divider"></div>
                 <a routerLink="/profile" class="dropdown-item">Edit profile</a>
                 <div class="dropdown-divider"></div>
@@ -131,6 +134,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   userEmail = '';
   userInitial = 'U';
   menuOpen = false;
+  isInstructor = false;
   private subs = new Subscription();
 
   constructor(private auth: AuthService, private cartService: CartService, private router: Router) {}
@@ -141,6 +145,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.userName = user?.fullName ?? '';
       this.userEmail = user?.email ?? '';
       this.userInitial = user?.fullName?.charAt(0)?.toUpperCase() ?? 'U';
+      this.isInstructor = user?.systemRole === 1;
       if (user) this.cartService.loadCart().subscribe();
     }));
     this.subs.add(this.cartService.cartItems$.subscribe(items => this.cartCount = items.length));

@@ -17,8 +17,7 @@ import { environment } from '../../../../environments/environment';
     <div class="detail-page page-enter" *ngIf="course; else loading">
       <!-- Hero Banner -->
       <div class="detail-hero">
-        <div class="hero-overlay"></div>
-        <img [src]="getThumbnail()" class="hero-bg-img" [alt]="course.title" />
+        <img [src]="getThumbnail()" class="hero-bg-img" [alt]="course.title" *ngIf="false" />
         <div class="container">
           <div class="hero-content-row">
             <div class="hero-info">
@@ -33,7 +32,7 @@ import { environment } from '../../../../environments/environment';
                 <span class="badge" [class]="course.status === 'Free' ? 'badge-free' : 'badge-purple'">{{ course.status }}</span>
               </div>
               <div class="instructor-row">
-                <div class="inst-avatar">{{ course.instructorName?.charAt(0) }}</div>
+                <div class="inst-avatar">{{ course.instructorName.charAt(0) }}</div>
                 <div>
                   <p class="inst-label">Instructor</p>
                   <p class="inst-name">{{ course.instructorName }}</p>
@@ -63,7 +62,7 @@ import { environment } from '../../../../environments/environment';
                 </button>
                 <div class="purchase-info">
                   <div class="info-item"><span>📚</span> {{ totalLessons }} lessons</div>
-                  <div class="info-item"><span>🗂️</span> {{ course.sections?.length || 0 }} sections</div>
+                  <div class="cur-meta"><span>🗂️</span> {{ course.sections.length || 0 }} sections</div>
                   <div class="info-item" *ngIf="course.isQuiz"><span>📝</span> Final quiz included</div>
                   <div class="info-item"><span>🏆</span> Certificate of completion</div>
                 </div>
@@ -81,7 +80,7 @@ import { environment } from '../../../../environments/environment';
             <div class="content-section" *ngIf="course.instructorBio">
               <h2>About the Instructor</h2>
               <div class="instructor-bio-card">
-                <div class="bio-avatar">{{ course.instructorName?.charAt(0) }}</div>
+                <div class="bio-avatar">{{ course.instructorName.charAt(0) }}</div>
                 <div>
                   <p class="bio-name">{{ course.instructorName }}</p>
                   <p class="bio-text">{{ course.instructorBio }}</p>
@@ -92,14 +91,14 @@ import { environment } from '../../../../environments/environment';
             <!-- Curriculum -->
             <div class="content-section">
               <h2>Course Content</h2>
-              <p class="curriculum-summary">{{ course.sections?.length }} sections • {{ totalLessons }} lectures</p>
+              <p class="acc-summary">{{ course.sections.length }} sections • {{ totalLessons }} lectures</p>
               <div class="accordion" *ngFor="let section of course.sections; let i = index">
                 <div class="acc-header" (click)="toggleSection(i)" [class.open]="openSections[i]">
                   <div class="acc-left">
                     <span class="acc-arrow">{{ openSections[i] ? '▼' : '▶' }}</span>
                     <span class="acc-title">{{ section.title }}</span>
                   </div>
-                  <span class="acc-count">{{ section.contents?.length }} lectures</span>
+                  <span class="acc-count">{{ section.contents.length }} lectures</span>
                 </div>
                 <div class="acc-body" *ngIf="openSections[i]">
                   <div class="lesson-item" *ngFor="let content of section.contents">
@@ -124,10 +123,8 @@ import { environment } from '../../../../environments/environment';
     .detail-hero {
       position: relative; overflow: hidden; padding-top: 64px;
       min-height: 420px; display: flex; align-items: flex-end; padding-bottom: 0;
-      background: var(--bg-primary);
+      background: var(--bg-white); border-bottom: 1px solid var(--border-color);
     }
-    .hero-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.12; }
-    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(15,15,15,0.98) 0%, rgba(15,15,15,0.8) 60%, rgba(15,15,15,0.3) 100%); }
     .container { position: relative; z-index: 1; }
     .hero-content-row { display: grid; grid-template-columns: 1fr 340px; gap: 60px; align-items: start; padding: 40px 0; }
     .breadcrumb { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px; }
