@@ -1,12 +1,22 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  standalone: true,
+  imports: [RouterOutlet, NavbarComponent, FooterComponent],
+  template: `
+    <app-navbar></app-navbar>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+    <app-footer></app-footer>
+  `,
+  styles: [`
+    :host { display: flex; flex-direction: column; min-height: 100dvh; }
+    main { flex: 1; }
+  `]
 })
-export class App {
-  protected readonly title = signal('udemy-frontend');
-}
+export class App { title = 'udemy-frontend'; }
